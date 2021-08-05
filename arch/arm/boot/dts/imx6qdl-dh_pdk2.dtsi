@@ -51,10 +51,35 @@
 			regulator-always-on;
 		};
 	};
+/* TODO GPIOs */
+	gpio-keys {
+	   compatible = "gpio-keys";
+
+	   power {
+		   label = "Power Button";
+		   gpios = <&gpio1 4 0>;//GPIOB
+		   linux,code = <1>;
+		   gpio-key,wakeup;
+		   debounce-interval = <1>;
+	   };
+	};
+	gpio-poweroff {
+	    compatible = "gpio-poweroff";
+	    gpios = <&gpio1 2 GPIO_ACTIVE_LOW>;
+	};
+
+
+	 sound-hdmi 
+	{
+		      compatible = "fsl,imx6q-audio-hdmi",
+		                   "fsl,imx-audio-hdmi";
+		      model = "imx-audio-hdmi";
+		      hdmi-controller = <&hdmi_audio>;
+	 }; 
 
 	mxcfb1: fb@0 {
 		compatible = "fsl,mxc_sdc_fb";
-		disp_dev = "lcd";
+		disp_dev = "ldb";//LCD:RGB, LDB:LVDS
 		disp_dev_allow_modifying_by_bootargs;
 		interface_pix_fmt = "RGB24";
 		default_bpp = <32>;
@@ -63,13 +88,21 @@
 		status = "okay";
 	};
 
-	mxcfb2: fb@1 {
-		status = "disabled";
-	};
+ 	mxcfb2: fb@1 {
+		compatible = "fsl,mxc_sdc_fb";
+		disp_dev = "hdmi";
+		interface_pix_fmt = "RGB24";
+		mode_str ="1920x1080M@60";
+		default_bpp = <32>;
+		int_clk = <0>;
+		late_init = <0>;
+		status = "okay";
+ 	};
 
 	mxcfb3: fb@2 {
 		status = "disabled";
 	};
+
 
 	mxcfb4: fb@3 {
 		status = "disabled";
@@ -207,6 +240,20 @@
 	status = "okay";
 };
 
+&hdmi_audio {
+	status = "okay";
+};
+
+&hdmi_video {
+	fsl,phy_reg_vlev = <0x0294>;
+	fsl,phy_reg_cksymtx = <0x800d>;
+	status = "okay";
+};
+&hdmi_core {
+	ipu_id = <0>;
+	disp_id = <1>;
+	status = "okay";
+};
 &ldb {
 	status = "okay";
 
@@ -219,25 +266,26 @@
 
 		// Set your LVDS display timings here
 		// To Avoid interference comment the parallel display timings out
-	/*	display-timings {						
+		display-timings {						
 			// DH display ID 10
-			LG_7inch_LB070WV8 {
+			10_1_LVDS {
 				dh-display-ID = "010";
-				clock-frequency = <33250000>;
-				hactive = <800>;
-				vactive = <480>;
-				hfront-porch = <64>;
-				hback-porch = <64>;
-				hsync-len = <128>;
-				vfront-porch = <10>;
-				vback-porch = <10>;
-				vsync-len = <25>;
+				clock-frequency = <71000000>;//33000000: 71000000
+				hactive = <1280>;//800: 1280
+				vactive = <800>;//480: 800
+				hfront-porch = <48>;//40: 48
+				hback-porch = <80>;//88: 80
+				hsync-len = <32>;//128: 32
+				vfront-porch = <2>;//10:2
+				vback-porch = <14>;//33:14
+				vsync-len = <7>;//2:7
 				hsync-active = <1>;
 				vsync-active = <1>;
 				de-active = <1>;
-				pixelclk-active = <0>;
+				pixelclk-active = <1>;
+
 			};
-		};*/
+		};
 
 	};
 
@@ -246,7 +294,7 @@
 		fsl,data-width = <24>;
 		crtc = "ipu1-di1";
 		primary;							// primary if first channel is disabled by bootargs
-		status = "okay";
+		status = "disabled";//status = "okay";
 	};
 };
 
@@ -304,6 +352,11 @@
 		interrupt-parent = <&gpio4>;
 		interrupts = <5 0>;
 		//linux,wakeup;
+	};
+
+	hdmi: edid@50 {
+		compatible = "fsl,imx6-hdmi-i2c";
+		reg = <0x50>;
 	};
 };
 

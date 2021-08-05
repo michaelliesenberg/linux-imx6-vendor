@@ -1,0 +1,4 @@
+sudo ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-4.9-2014.11-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make imx6_dhcom_defconfig
+sudo ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-4.9-2014.11-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make menuconfig (optional: If you want to add/remove Kernel features)
+sudo ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-4.9-2014.11-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make dtbs
+sudo ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-4.9-2014.11-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make zImage
