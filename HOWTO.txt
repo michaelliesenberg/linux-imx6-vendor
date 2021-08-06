@@ -2,3 +2,7 @@ sudo ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-4.9-2014.11-x86_64_arm-linux-gnueabi
 sudo ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-4.9-2014.11-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make menuconfig (optional: If you want to add/remove Kernel features)
 sudo ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-4.9-2014.11-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make dtbs
 sudo ARCH=arm CROSS_COMPILE=/opt/gcc-linaro-4.9-2014.11-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- make zImage
+sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make modules
+sudo rm -rf /work/ELCAT/ROOTFS_vasoport/lib/modules/*
+sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- make INSTALL_MOD_PATH="/work/ELCAT/ROOTFS_vasoport" modules_install
+
